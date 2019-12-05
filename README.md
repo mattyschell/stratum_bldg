@@ -10,20 +10,20 @@ deployment.
 
 # Import data
 
-Externalize PostgreSQL connection details.
+Externalize PostgreSQL connection details for the stratum user.
 
 ```shell
-$ export PGDATABASE=bse
-$ export PGUSER=stratum
+$ export PGDATABASE=gis
 $ export PGPORT=5433
-$ export PGPASSWORD=BeMyDatabae!
+$ export PGPASSWORD=BeMyDatabaePostGis!
 $ export PGHOST=aws.dollar.dollar.bill
 ```
 
-Run the import script to populate either bldg_blue or bldg_green.
+Run the import script to populate either bldg_blue or bldg_green.  This script
+executes as the stratum user.
 
 ```shell
-    $ ./import.sh bldg_blue
+$ ./import.sh bldg_blue
 ```
 
 
@@ -50,9 +50,8 @@ interoperable, [shapefile](https://en.wikipedia.org/wiki/Shapefile) format.
 2. Load the dreaded but interoperable shapefile into a scratch PostGIS database
 using [shp2pgsql](https://postgis.net/docs/using_postgis_dbmanagement.html#shp2pgsql_usage)
 
-```
-shell
-shp2pgsql -s 2263 -g shape /d/temp/building.shp buildingtemp > /d/temp/buildingtemp.sql
+```shell
+$ shp2pgsql -s 2263 -g shape /d/temp/building.shp buildingtemp > /d/temp/buildingtemp.sql
 ```
 
 3. Run the sql produced to create a new table named buildingtemp. Column names 
@@ -60,9 +59,8 @@ will be lopped off because of the dreaded but interoperable shapefile format.
 We could produce a mapping file to avoid the messy column names hitting the
 database.
 
-```
-shell
-psql /d/temp/buildingtemp.sql
+```shell
+$ psql /d/temp/buildingtemp.sql
 ```
 
 4. Insert the scratch data into a more tidy form.  Eliminate buildings that
