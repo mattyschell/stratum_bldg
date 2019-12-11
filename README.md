@@ -20,7 +20,7 @@ $ export PGHOST=aws.dollar.dollar.bill
 ```
 
 Run the import script to populate either bldg_blue or bldg_green.  This script
-executes as the stratum user.
+executes as the stratum user regardless of your PGUSER environmental.
 
 ```shell
 $ ./import.sh bldg_blue
@@ -29,8 +29,8 @@ $ ./import.sh bldg_blue
 
 # TMI: Where Did This Data Come From?
 
-You shouldn't read this, it is radically transparent background on how the data
-sausage is made.  But you're still reading for some reason.
+You shouldn't read this, it is radically transparent background describing how 
+the vegan data sausage is made.  But you're still reading for some reason.
 
 The New York City Department of Information Technology and Telecommunications
 (DOITT) Geographic Information Systems (GIS) outfit maintains buildings 
@@ -39,7 +39,7 @@ footprints.  The [metadata is here](https://github.com/CityOfNewYork/nyc-geo-met
 This data is currently maintained in a versioned [ESRI](https://www.esri.com/en-us/home)
 Geodatabase.  The spatial data is stored in ESRI's proprietary SDE.ST_GEOMETRY
 format.  Data stored in this format is essentially ransomwared, so the procedure
-outlined below is driven by the need to extract the spatial data from the 
+outlined below is driven by the need to jailbreak the spatial data from the 
 database where it is locked up.
 
 Paths and file names below should be changed to protect the innocent.
@@ -57,7 +57,7 @@ $ shp2pgsql -s 2263 -g shape /d/temp/building.shp buildingtemp > /d/temp/buildin
 3. Run the sql produced to create a new table named buildingtemp. Column names 
 will be lopped off because of the dreaded but interoperable shapefile format. 
 We could produce a mapping file to avoid the messy column names hitting the
-database.
+database but we are lazy and the SQL below accomplishes the same.
 
 ```shell
 $ psql /d/temp/buildingtemp.sql
@@ -99,7 +99,7 @@ from buildingtemp
 where bin not in (1000000,2000000,3000000,4000000,5000000);
 ```
 
-5. Verify that all shapes are valid. If not, deal with them.
+5. Verify that all shapes are valid. If not, deal with them as you do.
 
 ```sql
 select 
@@ -112,6 +112,8 @@ where
 ```
 
 6. Dump it
+
+Gonna explore -Z in the future and maybe skip step 7. 
 
 ```shell
 pg_dump -a -f /d/temp/building.sql -n bldg_blue -O -S stratum -t bldg_blue.building -x
