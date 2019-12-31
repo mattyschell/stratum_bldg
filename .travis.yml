@@ -11,7 +11,6 @@ git:
 env:
   global:
     - STRATUMPASSWORD=BeMyDataBaePostGis!
-    - PGDATABASE=gis
 before_install: 
   # running out of WAL unless we reallocate 50 pct of VM to /var/ramfs
   - sudo mount -o remount,size=50% /var/ramfs
@@ -20,14 +19,14 @@ install:
   - chmod +x ./stratum/sample_users.sh
   - chmod +x ./stratum/sample_schema.sh
   - psql -U postgres -c "create database gis"
-  - "./stratum/sample_users.sh"
-  - "(export PGPASSWORD=$STRATUMPASSWORD && ./stratum/sample_schema.sh)"
+  - "(export PGDATABASE=gis && ./stratum/sample_users.sh)"
+  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./stratum/sample_schema.sh)"
 before_script:
   - chmod +x import.sh
   - chmod +x src/test/run_all_tests.sh
   - wget -O building.sql.gz https://github.com/mattyschell/stratum_bldg/raw/master/building.sql.gz
   - df -h
 script:
-  - "(export PGPASSWORD=$STRATUMPASSWORD && ./import.sh bldg_blue)"
+  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./import.sh bldg_blue)"
   - df -h
   - "./src/test/run_all_tests.sh bldg_blue"
