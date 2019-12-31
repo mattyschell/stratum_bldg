@@ -114,9 +114,12 @@ def run_simple_test(testscript
         for dirtyline in dirtydossier:
             print ("{0}{1}".format('   '
                                  ,dirtyline)) 
+
+        return 1
+        
     else:
         print ("{0}".format('. OK'))
-
+        return 0
 
 if __name__ == "__main__":
 
@@ -129,5 +132,7 @@ if __name__ == "__main__":
     ptestscript = sys.argv[1]   
     ptestexpected = sys.argv[2]
 
-    run_simple_test(ptestscript
-                   ,ptestexpected)
+    exitval = run_simple_test(ptestscript
+                             ,ptestexpected)
+
+    sys.exit(exitval)

@@ -5,8 +5,9 @@ deployment.
 
 # Dependencies
 
-1. Git Large File Storage https://git-lfs.github.com/
-2. Terminal with zip and psql access  
+1. Git [Large File Storage](https://git-lfs.github.com/)
+2. PostgreSQL with PostGIS extension (Travis CI tests at PostgreSQL 10.7, PostGIS 2.5)
+3. A [Stratum](https://github.com/mattyschell/stratum) deployment.
 
 # Import data
 
