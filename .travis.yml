@@ -11,6 +11,8 @@ git:
 env:
   global:
     - STRATUMPASSWORD=BeMyDataBaePostGis!
+before_install: 
+  - sudo mount -o remount,size=50% /var/ramfs
 install:
   - git clone https://github.com/mattyschell/stratum.git
   - chmod +x ./stratum/sample_users.sh
