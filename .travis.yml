@@ -19,7 +19,7 @@ install:
   - git clone https://github.com/mattyschell/stratum.git
   - chmod +x ./stratum/sample_users.sh
   - chmod +x ./stratum/sample_schema.sh
-  - psql -U postgres -c "create database $PGDATABASE"
+  - psql -U postgres -c "create database gis"
   - "./stratum/sample_users.sh"
   - "(export PGPASSWORD=$STRATUMPASSWORD && ./stratum/sample_schema.sh)"
 before_script:
