@@ -1,5 +1,7 @@
 # Stratum Building
 
+[![Build Status](https://travis-ci.org/mattyschell/stratum_bldg.svg?branch=master)](https://travis-ci.org/mattyschell/stratum_bldg)
+
 Import NYC buildings spatial data into a [stratum](https://github.com/mattyschell/stratum)
 deployment.
 
