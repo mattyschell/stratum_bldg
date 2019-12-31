@@ -21,7 +21,7 @@ install:
 before_script:
   - chmod +x import.sh
   - chmod +x src/test/run_all_tests.sh
-  - wget https://github.com/mattyschell/stratum_bldg/raw/master/building.sql.gz
+  - wget -O building.sql.gz https://github.com/mattyschell/stratum_bldg/raw/master/building.sql.gz
 script:
   - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./import.sh bldg_blue)"
   - "./src/test/run_all_tests.sh bldg_blue"
