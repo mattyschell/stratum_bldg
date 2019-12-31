@@ -14,7 +14,7 @@ Externalize PostgreSQL connection details for the stratum user.
 
 ```shell
 $ export PGDATABASE=gis
-$ export PGPORT=5433
+$ export PGPORT=5432
 $ export PGPASSWORD=BeMyDatabaePostGis!
 $ export PGHOST=aws.dollar.dollar.bill
 ```
@@ -24,6 +24,23 @@ executes as the stratum user regardless of your PGUSER environmental.
 
 ```shell
 $ ./import.sh bldg_blue
+```
+
+# Integration Tests
+
+Tests that we loaded the data as expected, stratum_catalog metadata looks decent,
+and loaded shapes are valid.  Checking geometry validity may take a minute or
+two, patience friend.
+
+Requires python 3+ in addition to psql.
+
+Should succeed for a public user on the database but the stratum user is fine 
+too. Externalize connection details.
+
+```shell
+$ export PGDATABASE=gis
+$ export PGPASSWORD=BeMyDataBaePostGis!
+$ ../stratum_bldg/src/test/run_all_tests.sh bldg_blue
 ```
 
 
@@ -39,7 +56,7 @@ footprints.  The [metadata is here](https://github.com/CityOfNewYork/nyc-geo-met
 This data is currently maintained in a versioned [ESRI](https://www.esri.com/en-us/home)
 Geodatabase.  The spatial data is stored in ESRI's proprietary SDE.ST_GEOMETRY
 format.  Data stored in this format is essentially ransomwared, so the procedure
-outlined below is driven by the need to jailbreak the spatial data from the 
+outlined below is driven by our need to jailbreak the spatial data from the 
 database where it is locked up.
 
 Paths and file names below should be changed to protect the innocent.
