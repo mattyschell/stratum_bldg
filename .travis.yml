@@ -1,0 +1,27 @@
+language: python
+services:
+  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10-postgis-2.5
+git:
+  lfs_skip_smudge: true
+env:
+  global:
+    - STRATUMPASSWORD=BeMyDataBaePostGis!
+install:
+  - git clone https://github.com/mattyschell/stratum.git
+  - chmod +x sample_users.sh
+  - chmod +x sample_schema.sh
+  - psql -U postgres -c "create database gis"
+  - "(export PGDATABASE=gis && ./sample_users.sh)"
+  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./sample_schema.sh)"
+before_script:
+  - chmod +x import.sh
+  - chmod +x src/test/run_all_tests.sh
+  - wget https://github.com/mattyschell/stratum_bldg/raw/master/building.sql.gz
+script:
+  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./import.sh bldg_blue)"
+  - "./src/test/run_all_tests.sh bldg_blue"
