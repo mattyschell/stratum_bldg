@@ -13,11 +13,11 @@ env:
     - STRATUMPASSWORD=BeMyDataBaePostGis!
 install:
   - git clone https://github.com/mattyschell/stratum.git
-  - chmod +x sample_users.sh
-  - chmod +x sample_schema.sh
+  - chmod +x ./stratum/sample_users.sh
+  - chmod +x ./stratum/sample_schema.sh
   - psql -U postgres -c "create database gis"
-  - "(export PGDATABASE=gis && ./sample_users.sh)"
-  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./sample_schema.sh)"
+  - "(export PGDATABASE=gis && ./stratum/sample_users.sh)"
+  - "(export PGPASSWORD=$STRATUMPASSWORD && export PGDATABASE=gis && ./stratum/sample_schema.sh)"
 before_script:
   - chmod +x import.sh
   - chmod +x src/test/run_all_tests.sh
