@@ -23,7 +23,8 @@ $ export PGHOST=aws.dollar.dollar.bill
 ```
 
 Run the import script to populate either bldg_blue or bldg_green.  This script
-executes as the stratum user regardless of your PGUSER environmental.
+executes as the stratum user regardless of your PGUSER environmental. The target
+tables enforce geometry validity which takes a little time, patience friend. 
 
 ```shell
 $ ./import.sh bldg_blue
@@ -31,9 +32,8 @@ $ ./import.sh bldg_blue
 
 # Integration Tests
 
-Tests that we loaded the data as expected, stratum_catalog metadata looks decent,
-and loaded shapes are valid.  Checking geometry validity may take a minute or
-two, patience friend.
+Tests that we loaded the data as expected on today's date and stratum_catalog 
+metadata looks decent. 
 
 Requires python 3+ in addition to psql.
 
@@ -80,7 +80,7 @@ We could produce a mapping file to avoid the messy column names hitting the
 database but we are lazy and the SQL below accomplishes the same.
 
 ```shell
-$ psql /d/temp/buildingtemp.sql
+$ psql -q -f /d/temp/buildingtemp.sql
 ```
 
 4. Insert the scratch data into a more tidy form.  Eliminate buildings that
@@ -133,13 +133,14 @@ where
 
 6. Dump it
 
-Gonna explore -Z in the future and maybe skip step 7. 
-
 ```shell
 pg_dump -a -f /d/temp/building.sql -n bldg_blue -O -S stratum -t bldg_blue.building -x
 ```
 
 7. Zip it
+
+Leaving the process this way because I want human-readable .sql.  Compression
+levels above default 6 accomplish little.
 
 ```shell
 gzip -k building.sql
